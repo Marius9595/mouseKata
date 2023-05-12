@@ -7,16 +7,16 @@ public class Mouse {
     private List<MouseEventListener> listeners = new ArrayList<>();
     private final long timeWindowInMillisecondsForDoubleClick = 500;
 
-    private boolean wasClickedBefore = false;
+    private boolean wasPressedBefore = false;
     private long lastRealeaseLeftButton = 0;
 
     public void pressLeftButton(long currentTimeInMilliseconds) {
-        if(wasClickedBefore & isInTimeWindowOfDoubleClick(currentTimeInMilliseconds)){
+        if(wasPressedBefore & isInTimeWindowOfDoubleClick(currentTimeInMilliseconds)){
             this.notifySubscribers(MouseEventType.DOUBLE_CLICK);
-            this.wasClickedBefore = false;
+            this.wasPressedBefore = false;
         }else{
             this.notifySubscribers(MouseEventType.CLICK);
-            this.wasClickedBefore = true;
+            this.wasPressedBefore = true;
         }
     }
 
@@ -31,7 +31,9 @@ public class Mouse {
 
     public void move(MousePointerCoordinates from, MousePointerCoordinates to, long
             currentTimeInMilliseconds) {
-        /*... implement this method ...*/
+        if(wasPressedBefore & !from.equals(to)){
+            this.notifySubscribers(MouseEventType.DRAG);
+        }
     }
 
     public void subscribe(MouseEventListener listener) {
