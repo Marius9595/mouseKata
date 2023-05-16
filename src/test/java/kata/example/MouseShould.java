@@ -9,7 +9,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 // TODO:
 // SINGLE CLICK
-//     no click, several clicks after a long time, multiples clicks without release?
+//     click
+//     no click,
+//     several clicks after a long time,
+//     multiples clicks without release?
 // DOUBLE CLICK
 //     clicks, click + move + click != double click
 // TRIPLE CLICK
@@ -22,6 +25,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MouseShould {
     @Test
-    void foo() {
+    void notify_click_with_press_and_release_sequence_with_left_button() {
+        SpyListener listener = new SpyListener();
+        Mouse mouse = new Mouse();
+        mouse.subscribe(listener);
+
+        mouse.pressLeftButton(0);
+        mouse.releaseLeftButton(100);
+
+        assertThat(listener.handleMouseEventHasBeenCalledWithClick()).isTrue();
     }
 }
