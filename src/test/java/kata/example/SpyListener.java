@@ -10,4 +10,8 @@ public class SpyListener implements MouseEventListener{
     public boolean handleMouseEventHasBeenCalledWithClick() {
         return this.eventToHandle == MouseEventType.CLICK;
     }
+
+    public boolean handleMouseEventHasBeenCalledWithDrag() {
+        return this.eventToHandle == MouseEventType.DRAG;
+    }
 }

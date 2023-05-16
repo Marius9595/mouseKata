@@ -35,4 +35,15 @@ public class MouseShould {
 
         assertThat(listener.handleMouseEventHasBeenCalledWithClick()).isTrue();
     }
+    @Test
+    void not_notify_any_from_left_button_if_this_was_not_pressed() {
+        SpyListener listener = new SpyListener();
+        Mouse mouse = new Mouse();
+        mouse.subscribe(listener);
+
+        mouse.releaseLeftButton(100);
+
+        assertThat(listener.handleMouseEventHasBeenCalledWithClick()).isFalse();
+        assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isFalse();
+    }
 }
