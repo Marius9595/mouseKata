@@ -11,6 +11,7 @@ public class Mouse {
     }
 
     public void releaseLeftButton(long currentTimeInMilliseconds) {
+        notifySubscribers(MouseEventType.CLICK);
     }
 
     public void move(
