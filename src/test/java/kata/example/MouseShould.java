@@ -94,4 +94,14 @@ public class MouseShould {
 
         assertThat(listener.handleMouseEventHasBeenCalledWithDrop()).isTrue();
     }
+
+    @Test
+    void not_enter_in_drag_mode_if_its_coordinates_does_not_change() {
+        mouse.pressLeftButton(0);
+        mouse.move(new MousePointerCoordinates(0, 0), new MousePointerCoordinates(0, 0), 100);
+        mouse.releaseLeftButton(200);
+
+        assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isFalse();
+        assertThat(listener.handleMouseEventHasBeenCalledWithDrop()).isFalse();
+    }
 }
