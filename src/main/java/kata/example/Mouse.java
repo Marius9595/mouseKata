@@ -55,7 +55,7 @@ public class Mouse {
             MousePointerCoordinates to,
             long currentTimeInMilliseconds
     ) {
-
+        notifySubscribers(MouseEventType.DRAG);
     }
 
     public void subscribe(MouseEventListener listener) {
