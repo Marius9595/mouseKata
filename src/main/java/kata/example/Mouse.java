@@ -4,12 +4,15 @@ package kata.example;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class Mouse {
     boolean leftButtonIsPressed = false;
     long lastTimeLeftButtonWasPresssed = 0;
     long lastTimeLeftButtonWasReleased = 0;
     boolean isDoubleClick = false;
     boolean isTripleClick = false;
+    boolean isInDragMode = false;
 
     private List<MouseEventListener> listeners = new ArrayList<>();
     public void pressLeftButton(long currentTimeInMilliseconds) {
@@ -40,6 +43,8 @@ public class Mouse {
             notifySubscribers(MouseEventType.TRIPLE_CLICK);
         } else if (isDoubleClick) {
             notifySubscribers(MouseEventType.DOUBLE_CLICK);
+        } else if (isInDragMode) {
+            notifySubscribers(MouseEventType.DROP);
         } else{
             notifySubscribers(MouseEventType.CLICK);
         }
@@ -56,9 +61,11 @@ public class Mouse {
             MousePointerCoordinates to,
             long currentTimeInMilliseconds
     ) {
-        if(leftButtonIsPressed){
-            notifySubscribers(MouseEventType.DRAG);
+        if (!leftButtonIsPressed) {
+            return;
         }
+        notifySubscribers(MouseEventType.DRAG);
+        isInDragMode = true;
     }
 
     public void subscribe(MouseEventListener listener) {
