@@ -6,34 +6,40 @@ import java.util.List;
 
 public class Mouse {
     boolean leftButtonIsPressed = false;
-    long lastTimeLeftButtonWasPresssed = -1;
+    long lastTimeLeftButtonWasPresssed = 0;
     long lastTimeLeftButtonWasReleased = 0;
     boolean isDoubleClick = false;
+    boolean isTripleClick = false;
+
     private List<MouseEventListener> listeners = new ArrayList<>();
     public void pressLeftButton(long currentTimeInMilliseconds) {
-        leftButtonIsPressed = true;
-        boolean wasPressedBefore = lastTimeLeftButtonWasPresssed >= 0;
-        if( wasPressedBefore && isInDoubleClickTimeWindow(currentTimeInMilliseconds)) {
-            isDoubleClick = true;
+        boolean wasPressedBefore = lastTimeLeftButtonWasPresssed != lastTimeLeftButtonWasReleased;
+        if (wasPressedBefore) {
+            if( areQuickConsecutiveClicks(currentTimeInMilliseconds, lastTimeLeftButtonWasReleased) && !isDoubleClick) {
+                isDoubleClick = true;
+            } else if ( areQuickConsecutiveClicks(currentTimeInMilliseconds, lastTimeLeftButtonWasReleased) && isDoubleClick && !isTripleClick){
+                isTripleClick = true;
+                isDoubleClick = false;
+            }
         }
         lastTimeLeftButtonWasPresssed = currentTimeInMilliseconds;
     }
 
-    private boolean isInDoubleClickTimeWindow(long currentTimeInMilliseconds) {
-        long timeWindowInMillisecondsForDoubleClick = 500;
-        return (currentTimeInMilliseconds - lastTimeLeftButtonWasReleased) < timeWindowInMillisecondsForDoubleClick;
+    private boolean areQuickConsecutiveClicks(long previous, long current) {
+        long timeWindowInMillisecondsForQuickConsecutiveClicks = 500;
+        return (previous - current) < timeWindowInMillisecondsForQuickConsecutiveClicks;
     }
 
     public void releaseLeftButton(long currentTimeInMilliseconds) {
-        if (!leftButtonIsPressed) {
-            return;
-        }
         if (isBeforeWhenItWasPressed(currentTimeInMilliseconds)) {
             throw new MouseStateException("The left button was released before it was pressed");
         }
-        if(isDoubleClick) {
+
+        if(isTripleClick) {
+            notifySubscribers(MouseEventType.TRIPLE_CLICK);
+        } else if (isDoubleClick) {
             notifySubscribers(MouseEventType.DOUBLE_CLICK);
-        }else{
+        } else{
             notifySubscribers(MouseEventType.CLICK);
         }
         lastTimeLeftButtonWasReleased = currentTimeInMilliseconds;
