@@ -10,13 +10,18 @@ public class Mouse {
     long lastTimeLeftButtonWasReleased = 0;
     boolean isDoubleClick = false;
     private List<MouseEventListener> listeners = new ArrayList<>();
-    private final long timeWindowInMillisecondsForDoubleClick = 500;
     public void pressLeftButton(long currentTimeInMilliseconds) {
         leftButtonIsPressed = true;
-        if( (lastTimeLeftButtonWasPresssed >= 0) && (currentTimeInMilliseconds - lastTimeLeftButtonWasReleased) < timeWindowInMillisecondsForDoubleClick) {
+        boolean wasPressedBefore = lastTimeLeftButtonWasPresssed >= 0;
+        if( wasPressedBefore && isInDoubleClickTimeWindow(currentTimeInMilliseconds)) {
             isDoubleClick = true;
         }
         lastTimeLeftButtonWasPresssed = currentTimeInMilliseconds;
+    }
+
+    private boolean isInDoubleClickTimeWindow(long currentTimeInMilliseconds) {
+        long timeWindowInMillisecondsForDoubleClick = 500;
+        return (currentTimeInMilliseconds - lastTimeLeftButtonWasReleased) < timeWindowInMillisecondsForDoubleClick;
     }
 
     public void releaseLeftButton(long currentTimeInMilliseconds) {
