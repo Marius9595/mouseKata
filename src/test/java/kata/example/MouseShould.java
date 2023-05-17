@@ -41,12 +41,10 @@ public class MouseShould {
         Mouse mouse = new Mouse();
         mouse.subscribe(listener);
 
-        mouse.pressLeftButton(0);
         mouse.releaseLeftButton(100);
-        mouse.pressLeftButton(599);
-        mouse.releaseLeftButton(601);
 
-        assertThat(listener.handleMouseEventHasBeenCalledWithDoubleClick()).isTrue();
+        assertThat(listener.handleMouseEventHasBeenCalledWithClick()).isFalse();
+        assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isFalse();
     }
     @Test
     void notify_double_click_when_time_window_between_last_realease_and_following_press_on_left_button_is_short() {
@@ -54,9 +52,11 @@ public class MouseShould {
         Mouse mouse = new Mouse();
         mouse.subscribe(listener);
 
+        mouse.pressLeftButton(0);
         mouse.releaseLeftButton(100);
+        mouse.pressLeftButton(599);
+        mouse.releaseLeftButton(601);
 
-        assertThat(listener.handleMouseEventHasBeenCalledWithClick()).isFalse();
-        assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isFalse();
+        assertThat(listener.handleMouseEventHasBeenCalledWithDoubleClick()).isTrue();
     }
 }
