@@ -70,4 +70,12 @@ public class MouseShould {
 
         assertThat(listener.handleMouseEventHasBeenCalledWithTripleClick()).isTrue();
     }
+
+    @Test
+    void notify_drag_when_mouse_is_moving_while_left_button_is_pressed() {
+        mouse.pressLeftButton(0);
+        mouse.move(new MousePointerCoordinates(0, 0), new MousePointerCoordinates(1, 1), 100);
+
+        assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isTrue();
+    }
 }
