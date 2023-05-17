@@ -13,6 +13,7 @@ public class Mouse {
 
     private List<MouseEventListener> listeners = new ArrayList<>();
     public void pressLeftButton(long currentTimeInMilliseconds) {
+        leftButtonIsPressed = true;
         boolean wasPressedBefore = lastTimeLeftButtonWasPresssed != lastTimeLeftButtonWasReleased;
         if (wasPressedBefore) {
             if( areQuickConsecutiveClicks(currentTimeInMilliseconds, lastTimeLeftButtonWasReleased) && !isDoubleClick) {
@@ -55,7 +56,9 @@ public class Mouse {
             MousePointerCoordinates to,
             long currentTimeInMilliseconds
     ) {
-        notifySubscribers(MouseEventType.DRAG);
+        if(leftButtonIsPressed){
+            notifySubscribers(MouseEventType.DRAG);
+        }
     }
 
     public void subscribe(MouseEventListener listener) {

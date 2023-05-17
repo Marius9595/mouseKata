@@ -85,4 +85,13 @@ public class MouseShould {
 
         assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isFalse();
     }
+
+    @Test
+    void notify_drop_if_left_button_is_release_after_a_drag() {
+        mouse.pressLeftButton(0);
+        mouse.move(new MousePointerCoordinates(0, 0), new MousePointerCoordinates(1, 1), 100);
+        mouse.releaseLeftButton(200);
+
+        assertThat(listener.handleMouseEventHasBeenCalledWithDrop()).isTrue();
+    }
 }

@@ -22,4 +22,8 @@ public class SpyListener implements MouseEventListener{
     public boolean handleMouseEventHasBeenCalledWithTripleClick() {
         return this.eventToHandle == MouseEventType.TRIPLE_CLICK;
     }
+
+    public boolean handleMouseEventHasBeenCalledWithDrop() {
+        return this.eventToHandle == MouseEventType.DROP;
+    }
 }
