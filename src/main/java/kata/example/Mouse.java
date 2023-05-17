@@ -28,7 +28,7 @@ public class Mouse {
         if (!leftButtonIsPressed) {
             return;
         }
-        if (lastTimeLeftButtonWasPresssed > currentTimeInMilliseconds) {
+        if (isBeforeWhenItWasPressed(currentTimeInMilliseconds)) {
             throw new MouseStateException("The left button was released before it was pressed");
         }
         if(isDoubleClick) {
@@ -38,6 +38,10 @@ public class Mouse {
         }
         lastTimeLeftButtonWasReleased = currentTimeInMilliseconds;
         leftButtonIsPressed = false;
+    }
+
+    private boolean isBeforeWhenItWasPressed(long currentTimeInMilliseconds) {
+        return lastTimeLeftButtonWasPresssed > currentTimeInMilliseconds;
     }
 
     public void move(
