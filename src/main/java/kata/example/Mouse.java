@@ -61,7 +61,7 @@ public class Mouse {
             MousePointerCoordinates to,
             long currentTimeInMilliseconds
     ) {
-        if (!leftButtonIsPressed) {
+        if (!leftButtonIsPressed || from.equals(to)) {
             return;
         }
         notifySubscribers(MouseEventType.DRAG);
