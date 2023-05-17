@@ -3,8 +3,7 @@ package kata.example;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 // TODO:
@@ -58,5 +57,18 @@ public class MouseShould {
         mouse.releaseLeftButton(601);
 
         assertThat(listener.handleMouseEventHasBeenCalledWithDoubleClick()).isTrue();
+    }
+    @Test
+    void not_allow_to_release_left_button_before_it_is_pressed() {
+        SpyListener listener = new SpyListener();
+        Mouse mouse = new Mouse();
+        mouse.subscribe(listener);
+
+        assertThatThrownBy(() -> {
+            mouse.pressLeftButton(100);
+            mouse.releaseLeftButton(99);
+        }).isInstanceOf(MouseStateException.class).withFailMessage(
+                "The left button can not be released before it is pressed"
+        );
     }
 }
