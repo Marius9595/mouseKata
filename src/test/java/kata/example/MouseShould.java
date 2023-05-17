@@ -1,5 +1,6 @@
 package kata.example;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,12 +24,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 public class MouseShould {
+    SpyListener listener;
+    Mouse mouse;
+
+    @BeforeEach
+    void setUp() {
+        listener = new SpyListener();
+        mouse = new Mouse();
+        mouse.subscribe(listener);
+    }
+
     @Test
     void notify_click_with_press_and_release_sequence_with_left_button() {
-        SpyListener listener = new SpyListener();
-        Mouse mouse = new Mouse();
-        mouse.subscribe(listener);
-
         mouse.pressLeftButton(0);
         mouse.releaseLeftButton(100);
 
@@ -36,10 +43,6 @@ public class MouseShould {
     }
     @Test
     void not_notify_any_from_left_button_if_this_was_not_pressed() {
-        SpyListener listener = new SpyListener();
-        Mouse mouse = new Mouse();
-        mouse.subscribe(listener);
-
         mouse.releaseLeftButton(100);
 
         assertThat(listener.handleMouseEventHasBeenCalledWithClick()).isFalse();
@@ -47,10 +50,6 @@ public class MouseShould {
     }
     @Test
     void notify_double_click_when_time_window_between_last_realease_and_following_press_on_left_button_is_short() {
-        SpyListener listener = new SpyListener();
-        Mouse mouse = new Mouse();
-        mouse.subscribe(listener);
-
         mouse.pressLeftButton(0);
         mouse.releaseLeftButton(100);
         mouse.pressLeftButton(599);
@@ -60,10 +59,6 @@ public class MouseShould {
     }
     @Test
     void not_allow_to_release_left_button_before_it_is_pressed() {
-        SpyListener listener = new SpyListener();
-        Mouse mouse = new Mouse();
-        mouse.subscribe(listener);
-
         assertThatThrownBy(() -> {
             mouse.pressLeftButton(100);
             mouse.releaseLeftButton(99);
