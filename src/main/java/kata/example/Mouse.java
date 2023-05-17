@@ -61,11 +61,10 @@ public class Mouse {
             MousePointerCoordinates to,
             long currentTimeInMilliseconds
     ) {
-        if (!leftButtonIsPressed || from.equals(to)) {
-            return;
+        isInDragMode = leftButtonIsPressed && !from.equals(to);
+        if (isInDragMode) {
+            notifySubscribers(MouseEventType.DRAG);
         }
-        notifySubscribers(MouseEventType.DRAG);
-        isInDragMode = true;
     }
 
     public void subscribe(MouseEventListener listener) {
