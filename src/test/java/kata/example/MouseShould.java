@@ -78,4 +78,11 @@ public class MouseShould {
 
         assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isTrue();
     }
+
+    @Test
+    void not_notify_drag_if_it_changes_its_position_but_left_button_is_not_pressed() {
+        mouse.move(new MousePointerCoordinates(0, 0), new MousePointerCoordinates(1, 1), 100);
+
+        assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isFalse();
+    }
 }
