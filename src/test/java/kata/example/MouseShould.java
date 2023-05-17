@@ -59,4 +59,15 @@ public class MouseShould {
                 "The left button can not be released before it is pressed"
         );
     }
+    @Test
+    void notify_triple_click_when_multiple_click_occurred_in_short_time() {
+        mouse.pressLeftButton(0);
+        mouse.releaseLeftButton(100);
+        mouse.pressLeftButton(200);
+        mouse.releaseLeftButton(300);
+        mouse.pressLeftButton(599);
+        mouse.releaseLeftButton(601);
+
+        assertThat(listener.handleMouseEventHasBeenCalledWithTripleClick()).isTrue();
+    }
 }

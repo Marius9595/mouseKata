@@ -18,4 +18,8 @@ public class SpyListener implements MouseEventListener{
     public boolean handleMouseEventHasBeenCalledWithDoubleClick() {
         return this.eventToHandle == MouseEventType.DOUBLE_CLICK;
     }
+
+    public boolean handleMouseEventHasBeenCalledWithTripleClick() {
+        return this.eventToHandle == MouseEventType.TRIPLE_CLICK;
+    }
 }
