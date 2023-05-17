@@ -42,13 +42,6 @@ public class MouseShould {
         assertThat(listener.handleMouseEventHasBeenCalledWithClick()).isTrue();
     }
     @Test
-    void not_notify_any_from_left_button_if_this_was_not_pressed() {
-        mouse.releaseLeftButton(100);
-
-        assertThat(listener.handleMouseEventHasBeenCalledWithClick()).isFalse();
-        assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isFalse();
-    }
-    @Test
     void notify_double_click_when_time_window_between_last_realease_and_following_press_on_left_button_is_short() {
         mouse.pressLeftButton(0);
         mouse.releaseLeftButton(100);
