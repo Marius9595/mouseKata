@@ -28,6 +28,9 @@ public class Mouse {
         if (!leftButtonIsPressed) {
             return;
         }
+        if (lastTimeLeftButtonWasPresssed > currentTimeInMilliseconds) {
+            throw new MouseStateException("The left button was released before it was pressed");
+        }
         if(isDoubleClick) {
             notifySubscribers(MouseEventType.DOUBLE_CLICK);
         }else{
