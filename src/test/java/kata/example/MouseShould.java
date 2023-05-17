@@ -104,4 +104,15 @@ public class MouseShould {
         assertThat(listener.handleMouseEventHasBeenCalledWithDrag()).isFalse();
         assertThat(listener.handleMouseEventHasBeenCalledWithDrop()).isFalse();
     }
+
+    @Test
+    void not_notify_double_click_if_it_has_moved_between_clicks() {
+        mouse.pressLeftButton(0);
+        mouse.move(new MousePointerCoordinates(0, 0), new MousePointerCoordinates(0, 0), 100);
+        mouse.releaseLeftButton(200);
+        mouse.pressLeftButton(300);
+        mouse.releaseLeftButton(400);
+
+        assertThat(listener.handleMouseEventHasBeenCalledWithDoubleClick()).isFalse();
+    }
 }
